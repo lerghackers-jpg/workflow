@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Work Flow – Run your whole business in one place</title>
+<style>
+:root{--bg:#0b1020;--card:#141b34;--text:#e8ecf8;--mut:#9aa6c8;--acc:#6c8cff}
+@media(prefers-color-scheme:light){:root{--bg:#f6f8ff;--card:#fff;--text:#12172b;--mut:#55608a}}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+.w{max-width:1000px;margin:auto;padding:0 20px}
+nav{display:flex;justify-content:space-between;padding:20px 0;font-weight:700}
+nav a{color:var(--acc);text-decoration:none;font-weight:500}
+.hero{text-align:center;padding:70px 0 40px}
+h1{font-size:clamp(2rem,5vw,3.4rem);margin:0 0 14px}
+.hero p{color:var(--mut);max-width:560px;margin:0 auto 28px;font-size:1.1rem}
+.btn{background:var(--acc);color:#fff;border:0;padding:13px 24px;border-radius:10px;font-size:1rem;cursor:pointer;font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;padding:30px 0}
+.card{background:var(--card);padding:22px;border-radius:14px}
+.card h3{margin:0 0 6px}.card p{margin:0;color:var(--mut)}
+#join{padding:40px 0 70px}
+form{background:var(--card);max-width:480px;margin:auto;padding:26px;border-radius:14px;display:grid;gap:12px}
+input,select,textarea{padding:12px;border-radius:8px;border:1px solid #8884;background:transparent;color:var(--text);font:inherit}
+.hp{position:absolute;left:-9999px}
+#msg{text-align:center;min-height:1.4em;color:var(--acc)}
+footer{text-align:center;color:var(--mut);padding:30px 0;font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="w">
+<nav><span>WorkFlow</span><a href="#join">Get started</a></nav>
+<section class="hero">
+<h1>Run your whole business in one place</h1>
+<p>Customers, invoices, email and tasks, all in one simple dashboard. Stop juggling ten apps.</p>
+<a href="#join"><button class="btn">Join the waitlist</button></a>
+</section>
+<section class="grid">
+<div class="card"><h3>📇 Customer CRM</h3><p>Track every lead and client with notes and history.</p></div>
+<div class="card"><h3>✉️ Built-in email</h3><p>Automatic confirmations, follow-ups and newsletters.</p></div>
+<div class="card"><h3>🧾 Invoices</h3><p>Create and send invoices, see who has paid.</p></div>
+<div class="card"><h3>📊 Reports</h3><p>Sales and growth numbers in one clear view.</p></div>
+</section>
+<section id="join">
+<h2 style="text-align:center">Get early access</h2>
+<form id="f">
+<input name="name" placeholder="Your name" required maxlength="100">
+<input name="email" type="email" placeholder="Email" required maxlength="200">
+<input name="company" placeholder="Business name (optional)" maxlength="100">
+<select name="interest"><option>CRM</option><option>Email</option><option>Invoices</option><option>Everything</option></select>
+<textarea name="message" rows="3" placeholder="What do you need help with?" maxlength="1000"></textarea>
+<input class="hp" name="website" tabindex="-1" autocomplete="off">
+<button class="btn" type="submit">Join waitlist</button>
+<div id="msg"></div>
+</form>
+</section>
+<footer>© WorkFlow</footer>
+</div>
+<script>
+document.getElementById('f').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const m=document.getElementById('msg');m.textContent='Sending...';
+  try{
+    const r=await fetch('/api/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(e.target)))});
+    if(!r.ok)throw 0;
+    m.textContent="You're in! Check your email.";e.target.reset();
+  }catch{m.textContent='Something went wrong, try again.'}
+});
+</script>
+</body>
+</html>
